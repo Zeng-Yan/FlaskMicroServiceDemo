@@ -85,9 +85,7 @@ def insert(root: str) -> Response:
         :return: JSON Response like {status: status code, info: info string}
     """
     table = TABLE_AFFINE[root]
-    record = dict()
-    for key in request.values.keys():
-        record[key] = request.values[key]
+    record = {k: request.values[k] for k in request.values.keys()}
     record = table(**record)  # 将字典实例化为记录
     primary_key = inspect(table).primary_key[0].name
 
@@ -119,10 +117,8 @@ def update_by_key(root: str) -> Response:
     """
     key, value = request.values['key'], request.values['value']
     table = TABLE_AFFINE[root]
-
-    record = dict()
-    for k in [_ for _ in request.values.keys() if _ not in ('key', 'value')]:
-        record[k] = request.values[k]
+    
+    record = {k: request.values[k] for k in request.values.keys() if k not in ('key', 'value')}
 
     try:
         table.query.filter_by(**{key: value}).update(record)     
