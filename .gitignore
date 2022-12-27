@@ -1,0 +1,16 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+.idea/
+__pycache__/
+build/
+
+*.pyc
+*.pyd
+*.xml
+*.iml
+*.db
+*.c
+*.tar
+*.gz
