@@ -9,7 +9,6 @@ This demo is a Flask-based micoroservice offerring basic CURD operations via RES
 ```
 ├─📄README.md             简介
 ├─📄.gitignore            Git忽略项配置
-├─🐍setup.py              编译配置
 ├─🐍unit_launcher.py      入口脚本
 ├─💼src                   代码模块
 │  ├─🐍configs.py         配置项
@@ -18,8 +17,7 @@ This demo is a Flask-based micoroservice offerring basic CURD operations via RES
 │  │  └─🐍tables.py       数据表定义
 │  └─💼funcs              视图函数与其他功能函数模块
 │     ├─🐍curd_views.py   增删查改相关的视图函数
-│     ├─🐍other_views.py  其他视图函数
-│     └─🐍utils.py        其他函数
+│     └─🐍other_views.py  其他视图函数
 └─📁docker                容器配置
    └─🐳Dockerfile         容器构建文件
 ```
