@@ -11,10 +11,6 @@ class EnhancedTable:
     """
     offering some universal functions and attributes to enhance Table of db.Model.
     """
-
-    def __init__(self) -> None:
-        pass
-
     __table_args__ = {'extend_existing': True}
 
     def __getitem__(self, key):

@@ -15,7 +15,7 @@ This demo is a Flask-based micoroservice offerring basic CURD operations via RES
 │  ├─💼database           数据库模块
 │  │  ├─🐍exts.py         数据库ORM对象声明与其他函数
 │  │  └─🐍tables.py       数据表定义
-│  └─💼funcs              视图函数与其他功能函数模块
+│  └─💼funcs              功能函数模块
 │     ├─🐍curd_views.py   增删查改相关的视图函数
 │     └─🐍other_views.py  其他视图函数
 └─📁docker                容器配置
