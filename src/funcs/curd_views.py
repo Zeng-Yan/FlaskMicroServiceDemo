@@ -102,8 +102,9 @@ def insert(root: str) -> Response:
     else:
         response = {
             'status': STATUS_CODE['success'],
-            'info': f'[INFO] insert success: {primary_key} = {request.values[primary_key]}', 
+            'info': f'[INFO] insert success: key={primary_key} value={record[primary_key]}', 
             }
+    print(response['info'])
     return jsonify(response)
 
 
@@ -134,8 +135,9 @@ def update_by_key(root: str) -> Response:
     else:
         response = {
             'status': STATUS_CODE['success'],
-            'info': f'[INFO] update success: {key} = {value}', 
+            'info': f'[INFO] update success: key={key} value={value}', 
             }
+    print(response['info'])
     return jsonify(response)
 
 
@@ -163,6 +165,7 @@ def drop_by_key(root: str) -> Response:
     else:
         response = {
             'status': STATUS_CODE['success'],
-            'info': f'[INFO] drop success: {key} = {value}', 
+            'info': f'[INFO] drop success: key={key} value={value}', 
             }
+    print(response['info'])
     return jsonify(response)
