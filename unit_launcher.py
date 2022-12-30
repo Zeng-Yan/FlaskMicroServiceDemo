@@ -1,11 +1,11 @@
 # cython: language_level=3
 
-from flask import Flask, request
+from flask import Flask
 
 from src.database.exts import db
 from src.configs import (
     SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS,
-    SQLALCHEMY_COMMIT_ON_TEARDOWN, SQLALCHEMY_ECHO
+    SQLALCHEMY_COMMIT_ON_TEARDOWN, SQLALCHEMY_ECHO,
 )
 
 # 初始化

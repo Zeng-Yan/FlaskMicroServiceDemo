@@ -7,15 +7,15 @@ import os
 # Web configs
 STATUS_CODE = {
     'success': 200,
-    'error': 202
+    'error': 202,
 }
 
 # MySQL Database configs
-# HOST = '192.168.1.1'
-# PORT = '6000'
-# DATABASE = 'zeng'
-# USERNAME = 'root'
-# PASSWORD = '123456'
+# HOST = ''
+# PORT = ''
+# DATABASE = ''
+# USERNAME = 'zeng'
+# PASSWORD = ''
 #
 # DB_URI = f'mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}?charset=utf8'
 
@@ -29,8 +29,3 @@ SQLALCHEMY_DATABASE_URI = DB_URI  # 设置连接数据库的URL
 SQLALCHEMY_TRACK_MODIFICATIONS = True  # 设置sqlalchemy自动更跟踪数据库
 SQLALCHEMY_ECHO = False  # 查询时不会显示原始SQL语句
 SQLALCHEMY_COMMIT_ON_TEARDOWN = False  # 禁止自动提交数据处理
-
-# WebSocket configs
-# SOCKET_SECRET_KEY = 'heyjude'
-# SOCKET_NAMESPACE = '/websocket'
-# SOCKET_RECEIVER_NAME = 'client'

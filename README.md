@@ -1,30 +1,34 @@
 ## Overview
 
-This demo is a Flask-based micoroservice offerring basic CURD operations via RESTful API.
+This demo is a Flask-based microservice offering basic CURD operations via RESTful API.
 
 ## Project Structure
-
-代码目录结构：
 
 ```
 ├─📄README.md             简介
 ├─📄.gitignore            Git忽略项配置
+├─🐚DockerDeploy.sh       简易CI镜像构建脚本    
 ├─🐍unit_launcher.py      入口脚本
-├─💼src                   代码模块
+├─💼src                   代码包
+│  ├─🐍__init__.py        
 │  ├─🐍configs.py         配置项
 │  ├─💼database           数据库模块
-│  │  ├─🐍exts.py         数据库ORM对象声明与其他函数
+|  │  ├─🐍__init__.py        
+│  │  ├─🐍exts.py         ORM对象声明与其他类
 │  │  └─🐍tables.py       数据表定义
 │  └─💼funcs              功能函数模块
+|     ├─🐍__init__.py        
 │     ├─🐍curd_views.py   增删查改相关的视图函数
 │     └─🐍other_views.py  其他视图函数
-└─📁docker                容器配置
-   └─🐳Dockerfile         容器构建文件
+├─📁EnvDocker             运行环境镜像配置
+│  └─🐳Dockerfile         镜像构建文件
+└─📁DepDocker             服务部署镜像配置
+   └─🐳Dockerfile         镜像构建文件
 ```
 
 ## Quick Start 
 
-run `unit_launcher.py` to start micoroservice.
+run `unit_launcher.py` to start microservice.
 
 ```commandline
 python3 unit_launcher.py
@@ -44,25 +48,25 @@ localhost:9001/db/point/query_all
 
 ## Deploy with Docker
 
-build docker image. `cd` into `docker/` and run command:
+Run `DockerDeploy.sh` to build Docker image automatically:
 
 ```commandline
-docker image build -t flask_microservice_demo .
+. DockerDeploy.sh
 ```
 
-save this image in `tar` format by running command:
+After that two Docker images will be built and one of these will be packaged into a `.tar` file which can be loaded by running command:
 
 ```commandline
-docker save -o zeng_falsk_ms.tar flask_microservice_demo:latest 
+docker load -i zeng_db_op_ms.tar 
 ```
 
-and load this image by running command:
+Then this microservice can be started in a container by running command like:
 
 ```commandline
-docker load -i zeng_falsk_ms.tar 
+docker run -it -p 9001:9001 -u root zeng_db_op_ms:latest
 ```
 
-start micoroservice in a container by running command like:
+or 
 
 ```commandline
 docker run -it \
@@ -70,11 +74,5 @@ docker run -it \
     -v {...}/unit_launcher.py:/home/unit_launcher.py \
     -p 9001:9001 \
     -u root \
-    flask_microservice_demo:latest
-```
-
-run this command if using the outside dockerfile
-
-```commandline
-docker run -it -p 5000:9001 -u root flask_microservice_demo:latest
+    flask_sql_env:latest
 ```

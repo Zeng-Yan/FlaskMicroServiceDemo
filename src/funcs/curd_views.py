@@ -6,7 +6,7 @@ from sqlalchemy import text, inspect
 
 from src.database import tables
 from src.database.exts import db
-from src.configs import STATUS_CODE, SOCKET_NAMESPACE, SOCKET_RECEIVER_NAME
+from src.configs import STATUS_CODE
 
 TABLE_AFFINE = {
     tables.Point.__tablename__: tables.Point,
@@ -32,20 +32,22 @@ def query_all(root: str) -> Response:
             res = table.query.order_by(text(sort_order)).all()
         else:
             res = table.query.all()
-        result = {}
-        for idx, record in enumerate(res):
-            result[str(idx)] = record.serialize()
+        result = {str(idx): record.serialize() for idx, record in enumerate(res)}
     except Exception as error:
-        print(error)
         response = {
             'status': STATUS_CODE['error'],
+            'info': f'[ERROR] Failing to query all in {root} '
+                    f'from {request.headers}: \n\t{error}',
             'result': None,
             }
     else:
         response = {
             'status': STATUS_CODE['success'],
+            'info': f'[INFO] Successfully query all in {root} '
+                    f'from {request.headers}',
             'result': result, 
             }
+    print(response['info'])
     return jsonify(response)
 
 
@@ -60,19 +62,24 @@ def query_by_key(root: str) -> Response:
     key, value = request.values['key'], request.values['value']
 
     try:
-        query_record = table.query.filter_by(**{key: value}).first()  # 查询返回对象代表一个record
-        result = query_record.serialize()
+        query_record = table.query.filter_by(**{key: value})  # 查询返回对象代表一个record
+        result = {str(idx): r.serialize() for idx, r in enumerate(query_record)}
     except Exception as error:
         print(error)
         response = {
             'status': STATUS_CODE['error'],
+            'info': f'[ERROR] Failing to query in {root} '
+                    f'with key={key} value={value} from {request.headers}: \n\t{error}',
             'result': None,
             }
     else:
         response = {
             'status': STATUS_CODE['success'],
+            'info': f'[INFO] Successfully query in {root} '
+                    f'with key={key} value={value} from {request.headers}',
             'result': result, 
             }
+    print(response['info'])
     return jsonify(response)
 
 
@@ -91,18 +98,20 @@ def insert(root: str) -> Response:
 
     try:
         db.session.add(record)  # 写入数据库
-        db.session.commit()  # 提交  
-        # print(request.values[primary_key])
+        # db.session.flush()
+        # record_ = record.serialize()
+        db.session.commit()  # 提交
     except Exception as error:
-        print(error)
         response = {
             'status': STATUS_CODE['error'],
-            'info': '[ERROR] insert failed', 
+            'info': f'[ERROR] Failing to insert in {root} '
+                    f'with key={primary_key} value={record[primary_key]} from {request.headers}: \n\t{error}',
             }
     else:
         response = {
             'status': STATUS_CODE['success'],
-            'info': f'[INFO] insert success: key={primary_key} value={record[primary_key]}', 
+            'info': f'[INFO] Successfully insert in {root} '
+                    f'with key={primary_key} value={record[primary_key]} from {request.headers}',
             }
     print(response['info'])
     return jsonify(response)
@@ -118,7 +127,7 @@ def update_by_key(root: str) -> Response:
     """
     key, value = request.values['key'], request.values['value']
     table = TABLE_AFFINE[root]
-    
+
     record = {k: request.values[k] for k in request.values.keys() if k not in ('key', 'value')}
 
     try:
@@ -127,15 +136,16 @@ def update_by_key(root: str) -> Response:
     # except AttributeError as e:
     #     return '[ERROR] update failed: no id matched.', STATUS_CODE['error']
     except Exception as error:
-        print(error)
         response = {
             'status': STATUS_CODE['error'],
-            'info': '[ERROR] update failed',
+            'info': f'[ERROR] Failing to update in {root} '
+                    f'with key={key} value={value} from {request.headers}: \n\t{error}',
             }
     else:
         response = {
             'status': STATUS_CODE['success'],
-            'info': f'[INFO] update success: key={key} value={value}', 
+            'info': f'[INFO] Successfully update in {root} '
+                    f'with key={key} value={value} from {request.headers}',
             }
     print(response['info'])
     return jsonify(response)
@@ -157,15 +167,16 @@ def drop_by_key(root: str) -> Response:
     # except AttributeError as e:
     #     return '[ERROR] delete failed: no id matched.', STATUS_CODE['error']
     except Exception as error:
-        print(error)
         response = {
             'status': STATUS_CODE['error'], 
-            'info': '[ERROR] drop failed',
+            'info': f'[ERROR] Failing to drop in {root} '
+                    f'with key={key} value={value} from {request.headers}: \n\t{error}',
             }
     else:
         response = {
             'status': STATUS_CODE['success'],
-            'info': f'[INFO] drop success: key={key} value={value}', 
+            'info': f'[INFO] Successfully drop in {root} '
+                    f'with key={key} value={value} from {request.headers}',
             }
     print(response['info'])
     return jsonify(response)

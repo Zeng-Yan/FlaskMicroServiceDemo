@@ -26,3 +26,10 @@ class EnhancedTable:
         affine = {key: value for key, value in self.__dict__.items()
                   if key != '_sa_instance_state'}
         return affine
+
+    @staticmethod
+    def str_to_date(t_str: str):
+        """
+        convert a format string to a datetime object.
+        """
+        return datetime.strptime(t_str, '%Y-%m-%d %H:%M:%S')
